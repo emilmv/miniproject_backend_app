@@ -4,6 +4,7 @@ using Juan_PB301EmilMusayev.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Juan_PB301EmilMusayev.Data.Migrations
 {
     [DbContext(typeof(JuanDbContext))]
-    partial class JuanDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240725214603_addedRelationshipTables")]
+    partial class addedRelationshipTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -58,34 +61,6 @@ namespace Juan_PB301EmilMusayev.Data.Migrations
                     b.HasIndex("ParentId");
 
                     b.ToTable("Categories");
-                });
-
-            modelBuilder.Entity("Juan_PB301EmilMusayev.Models.Color", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeleteDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdateDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Colors");
                 });
 
             modelBuilder.Entity("Juan_PB301EmilMusayev.Models.Product", b =>
@@ -133,41 +108,6 @@ namespace Juan_PB301EmilMusayev.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Products");
-                });
-
-            modelBuilder.Entity("Juan_PB301EmilMusayev.Models.ProductColor", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ColorId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeleteDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("UpdateDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ColorId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("ProductColors");
                 });
 
             modelBuilder.Entity("Juan_PB301EmilMusayev.Models.ProductImage", b =>
@@ -348,25 +288,6 @@ namespace Juan_PB301EmilMusayev.Data.Migrations
                     b.Navigation("Parent");
                 });
 
-            modelBuilder.Entity("Juan_PB301EmilMusayev.Models.ProductColor", b =>
-                {
-                    b.HasOne("Juan_PB301EmilMusayev.Models.Color", "Color")
-                        .WithMany("ProductColors")
-                        .HasForeignKey("ColorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Juan_PB301EmilMusayev.Models.Product", "Product")
-                        .WithMany("ProductColors")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Color");
-
-                    b.Navigation("Product");
-                });
-
             modelBuilder.Entity("Juan_PB301EmilMusayev.Models.ProductImage", b =>
                 {
                     b.HasOne("Juan_PB301EmilMusayev.Models.Product", "product")
@@ -402,15 +323,8 @@ namespace Juan_PB301EmilMusayev.Data.Migrations
                     b.Navigation("Children");
                 });
 
-            modelBuilder.Entity("Juan_PB301EmilMusayev.Models.Color", b =>
-                {
-                    b.Navigation("ProductColors");
-                });
-
             modelBuilder.Entity("Juan_PB301EmilMusayev.Models.Product", b =>
                 {
-                    b.Navigation("ProductColors");
-
                     b.Navigation("ProductImages");
 
                     b.Navigation("ProductSizes");
