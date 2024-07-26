@@ -4,6 +4,7 @@ using Juan_PB301EmilMusayev.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Juan_PB301EmilMusayev.Data.Migrations
 {
     [DbContext(typeof(JuanDbContext))]
-    partial class JuanDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240726172055_modifiedProductTable")]
+    partial class modifiedProductTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -316,39 +319,6 @@ namespace Juan_PB301EmilMusayev.Data.Migrations
                     b.ToTable("ProductSizes");
                 });
 
-            modelBuilder.Entity("Juan_PB301EmilMusayev.Models.Rating", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DeleteDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StarCount")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("UpdateDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("Rating");
-                });
-
             modelBuilder.Entity("Juan_PB301EmilMusayev.Models.Setting", b =>
                 {
                     b.Property<int>("Id")
@@ -508,17 +478,6 @@ namespace Juan_PB301EmilMusayev.Data.Migrations
                     b.Navigation("size");
                 });
 
-            modelBuilder.Entity("Juan_PB301EmilMusayev.Models.Rating", b =>
-                {
-                    b.HasOne("Juan_PB301EmilMusayev.Models.Product", "Product")
-                        .WithMany("Ratings")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-                });
-
             modelBuilder.Entity("Juan_PB301EmilMusayev.Models.Category", b =>
                 {
                     b.Navigation("Children");
@@ -536,8 +495,6 @@ namespace Juan_PB301EmilMusayev.Data.Migrations
                     b.Navigation("ProductImages");
 
                     b.Navigation("ProductSizes");
-
-                    b.Navigation("Ratings");
                 });
 
             modelBuilder.Entity("Juan_PB301EmilMusayev.Models.Size", b =>
