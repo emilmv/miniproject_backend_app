@@ -1,0 +1,59 @@
+﻿@model Product
+
+<div class="product-details-inner">
+    <div class="row">
+        <div class="col-lg-5">
+            <div class="product-large-slider mb-20">
+                <div class="pro-large-img img-zoom">
+                    <img src="~/assets/img/product/@Model.DisplayImage"
+                         alt="product thumb" />
+                </div>
+            </div>
+            <div class="pro-nav slick-row-5">
+                <div class="pro-nav-thumb">
+                    @foreach (var productImage in Model.ProductImages)
+                    {
+
+                        <img src="~/assets/img/product/@productImage.Image"
+                             alt="" />
+
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-7">
+            <div class="product-details-des">
+                <h3 class="pro-det-title">@Model.Name</h3>
+                <div class="pro-review">
+                    <span><a href="#">@Model.ProductReviews.Count() Review(s)</a></span>
+                </div>
+                <div class="price-box">
+                    <span class="regular-price">$@Model.DiscountPrice</span>
+                    <span class="old-price"><del>$@Model.SalePrice</del></span>
+                </div>
+                <p>
+                    @Model.Description
+                </p>
+                <div class="quantity-cart-box d-flex align-items-center mb-20">
+                    <div class="quantity">
+                        <div class="pro-qty">
+                            <input type="text" value="1" />
+                        </div>
+                    </div>
+                    <a href="cart.html" class="btn btn-default">Add To Cart</a>
+                </div>
+                <div class="availability mb-20">
+                    <h5 class="cat-title">Availability:</h5>
+                    <span>@(Model.Count > 0 ? "In stock" : "Out of stock")</span>
+                </div>
+                <div class="share-icon">
+                    <h5 class="cat-title">Share:</h5>
+                    <a href="#"><i class="fa fa-facebook"></i></a>
+                    <a href="#"><i class="fa fa-twitter"></i></a>
+                    <a href="#"><i class="fa fa-pinterest"></i></a>
+                    <a href="#"><i class="fa fa-google-plus"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

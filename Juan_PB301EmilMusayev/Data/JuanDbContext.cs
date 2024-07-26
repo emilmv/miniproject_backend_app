@@ -16,6 +16,9 @@ namespace Juan_PB301EmilMusayev.Data
         public DbSet<ProductColor> ProductColors { get; set; }
         public DbSet<Policy> Policies { get; set; }
         public DbSet<Banner> Banners { get; set; }
+        public DbSet<Blog> Blogs { get; set; }
+        public DbSet<Brand> Brands { get; set; }
+        public DbSet<ProductReview> ProductReviews { get; set; }
 
         public JuanDbContext(DbContextOptions options) : base(options)
         {

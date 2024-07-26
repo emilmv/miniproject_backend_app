@@ -19,6 +19,7 @@ namespace Juan_PB301EmilMusayev.Models
         public List<ProductImage>? ProductImages { get; set; }
         public List<ProductColor>? ProductColors { get; set; }
         public List<Rating>? Ratings { get; set; }
+        public List<ProductReview>? ProductReviews { get; set; }
         public string? DisplayImage { get; set; }
         public bool IsNewArrival { get; set; }
     }
