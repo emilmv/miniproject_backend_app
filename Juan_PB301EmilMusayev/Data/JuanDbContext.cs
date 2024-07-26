@@ -14,6 +14,7 @@ namespace Juan_PB301EmilMusayev.Data
         public DbSet<ProductSize> ProductSizes { get; set; }
         public DbSet<Color> Colors { get; set; }
         public DbSet<ProductColor> ProductColors { get; set; }
+        public DbSet<Policy> Policies { get; set; }
 
         public JuanDbContext(DbContextOptions options) : base(options)
         {

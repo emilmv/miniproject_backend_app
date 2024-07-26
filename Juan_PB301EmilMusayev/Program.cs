@@ -10,7 +10,6 @@ builder.Services.AddDbContext<JuanDbContext>(options =>
     options.UseSqlServer(config.GetConnectionString("DefaultConnection"));
 });
 var app = builder.Build();
-
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
