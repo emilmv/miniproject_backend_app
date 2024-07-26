@@ -8,6 +8,7 @@ namespace Juan_PB301EmilMusayev.ViewModels
         public List<Product>? Products { get; set; }
         public List<Policy>? Policies { get; set; }
         public string? ProductDescription { get; set; }
+        public List<Banner>? Banners { get; set; }
 
     }
 }
