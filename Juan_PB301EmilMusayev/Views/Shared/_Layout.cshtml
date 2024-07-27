@@ -1,6 +1,7 @@
-﻿@inject LayoutService layoutService
+﻿@inject ILayoutService layoutService
 @{
     var settings = layoutService.GetSettings();
+    var products = await layoutService.GetProducts();
 }
 <!DOCTYPE html>
 <html class="no-js" lang="zxx">
@@ -22,6 +23,7 @@
     <!--=== Main Style CSS ===-->
     <link href="~/assets/css/style.css" rel="stylesheet" />
     <!-- Modernizer JS -->
+    
     <script src="~/assets/js/modernizr-2.8.3.min.js"></script>
 
     <!--[if lt IE 9]>
@@ -41,7 +43,7 @@
                     <div class="row align-items-center">
                         <div class="col-lg-6">
                             <div class="welcome-message">
-                                <p>Welcome to Juan online store</p>
+                                <p>@settings["WelcomeMessage"]</p>
                             </div>
                         </div>
                         <div class="col-lg-6 text-right">
@@ -87,7 +89,7 @@
                         <!-- start logo area -->
                         <div class="col-lg-2">
                             <div class="logo">
-                                <a href="index.html">
+                                <a asp-controller="Home" asp-action="Index">
                                     <img src="~/assets/img/logo/@settings["Logo"]" alt="" />
                                 </a>
                             </div>
@@ -101,7 +103,7 @@
                                     <nav class="desktop-menu">
                                         <ul>
                                             <li class="active">
-                                                <a href="index.html">
+                                                <a asp-controller="Home" asp-action="Index">
                                                     Home <i class="fa fa-angle-down"></i>
                                                 </a>
                                                 <ul class="dropdown">
@@ -172,7 +174,7 @@
                                                 </ul>
                                             </li>
                                             <li>
-                                                <a href="shop.html">
+                                                <a asp-controller="Shop" asp-action="Index">
                                                     shop <i class="fa fa-angle-down"></i>
                                                 </a>
                                                 <ul class="dropdown">
@@ -263,7 +265,7 @@
                                                     </li>
                                                 </ul>
                                             </li>
-                                            <li><a href="contact-us.html">Contact us</a></li>
+                                            <li><a asp-controller="ContactUs" asp-action="Index">Contact us</a></li>
                                         </ul>
                                     </nav>
                                     <!-- main menu navbar end -->
@@ -357,7 +359,9 @@
                         <button class="search-btn">
                             <i class="ion-ios-search-strong"></i>
                         </button>
+                        
                     </form>
+                    
                 </div>
                 <!-- search box end -->
                 <!-- mobile menu start -->
@@ -581,7 +585,7 @@
     <!-- off-canvas menu end -->
     <!-- main wrapper start -->
     <main>
-       @RenderBody()
+        @RenderBody()
     </main>
     <!-- main wrapper end -->
     <!-- Quick view modal start -->
@@ -595,7 +599,6 @@
                 </div>
                 <div class="modal-body">
                     <!-- product details inner end -->
-                    
                     <!-- product details inner end -->
                 </div>
             </div>
@@ -719,12 +722,18 @@
             </div>
             <div class="container">
                 <div class="offcanvas-search-box">
+                    <div class="w-100">
                     <form class="d-flex bdr-bottom w-100">
-                        <input type="text" placeholder="Search entire storage here..." />
+                        <input id="searchInput" type="text" autocomplete="off" placeholder="Search entire storage here..." />
                         <button class="search-btn">
                             <i class="ion-ios-search-strong"></i>search
                         </button>
                     </form>
+                    <div>
+                        <ul id="searchList"></ul>
+                    </div>
+                    </div>
+                    
                 </div>
             </div>
         </div>

@@ -1,13 +1,14 @@
-﻿using Juan_PB301EmilMusayev.Services;
+﻿using Juan_PB301EmilMusayev.Interfaces;
+using Juan_PB301EmilMusayev.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Juan_PB301EmilMusayev.Controllers
 {
     public class ContactUsController : Controller
     {
-        private readonly LayoutService _layoutService;
+        private readonly ILayoutService _layoutService;
 
-        public ContactUsController(LayoutService layoutService)
+        public ContactUsController(ILayoutService layoutService)
         {
             _layoutService = layoutService;
         }

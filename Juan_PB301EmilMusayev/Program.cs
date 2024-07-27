@@ -1,4 +1,5 @@
 using Juan_PB301EmilMusayev.Data;
+using Juan_PB301EmilMusayev.Interfaces;
 using Juan_PB301EmilMusayev.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,7 +11,7 @@ builder.Services.AddDbContext<JuanDbContext>(options =>
 {
     options.UseSqlServer(config.GetConnectionString("DefaultConnection"));
 });
-builder.Services.AddScoped<LayoutService>();
+builder.Services.AddScoped<ILayoutService,LayoutService>();
 var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
