@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@inject LayoutService layoutService
+@{
+    var settings = layoutService.GetSettings();
+}
+<!DOCTYPE html>
 <html class="no-js" lang="zxx">
 <!-- Mirrored from demo.hasthemes.com/juan-preview-v1/juan/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 07 Mar 2021 22:36:22 GMT -->
 <head>
@@ -84,7 +88,7 @@
                         <div class="col-lg-2">
                             <div class="logo">
                                 <a href="index.html">
-                                    <img src="~/assets/img/logo/logo.png" alt="" />
+                                    <img src="~/assets/img/logo/@settings["Logo"]" alt="" />
                                 </a>
                             </div>
                         </div>
@@ -611,16 +615,15 @@
                             <div class="widget-body">
                                 <ul class="location-wrap">
                                     <li>
-                                        <i class="ion-ios-location-outline"></i>184 Main Rd E, St
-                                        Albans VIC 3021, Australia
+                                        <i class="ion-ios-location-outline"></i>@settings["Address"]
                                     </li>
                                     <li>
                                         <i class="ion-ios-email-outline"></i>Mail Us:
-                                        <a href="mailto:yourmail@gmail.com">yourmail@gmail.com</a>
+                                        <a href="mailto:@settings["Email"]">@settings["Email"]</a>
                                     </li>
                                     <li>
                                         <i class="ion-ios-telephone-outline"></i>Phone:
-                                        <a href="%2b0025425456554">+ 00 254 254565</a>
+                                        <a href="%2b0025425456554">@settings["PhoneNumber"]</a>
                                     </li>
                                 </ul>
                             </div>
