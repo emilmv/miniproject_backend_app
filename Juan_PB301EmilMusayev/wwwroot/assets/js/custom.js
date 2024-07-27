@@ -12,8 +12,6 @@
         }
     });
 
-
-
     //partial modal function
     let links = $(".productModal").click(function (ev) {
         ev.preventDefault();
@@ -36,4 +34,15 @@
                 $('.img-zoom').zoom();
             });
     })
+
+    //addToCart
+    $(".addToCart").click(function (ev) {
+        ev.preventDefault();
+        let id = $(this).data("id");
+        axios.get("/cart/addtocart?id=" + id)
+            .then(function (datas) {
+                $(".minicart-content-box").html(datas.data);
+            })
+    });
+
 });

@@ -1,0 +1,53 @@
+﻿@model IEnumerable<CartVM>
+@{
+    var totalPrice = Model.Sum(c => c.Price * c.Count * 20 / 100) + Model.Sum(c => c.Price * c.Count) + 10;
+}
+
+<div class="minicart-item-wrapper">
+    <ul>
+        @foreach (var cartItem in Model)
+        {
+            <li class="minicart-item">
+                <div class="minicart-thumb">
+                    <a asp-controller="product" asp-action="detail" asp-route-id="@cartItem.Id">
+                        <img src="~/assets/img/product/@cartItem.Image" alt="product" />
+                    </a>
+                </div>
+                <div class="minicart-content">
+                    <h3 class="product-name">
+                        <a href="product-details.html">@cartItem.Name</a>
+                    </h3>
+                    <p>
+                        <span class="cart-quantity">@cartItem.Count <strong>&times;</strong></span>
+                        <span class="cart-price">$@cartItem.Price.00</span>
+                    </p>
+                </div>
+                <button class="minicart-remove">
+                    <i class="ion-android-close"></i>
+                </button>
+            </li>
+        }
+    </ul>
+</div>
+
+<div class="minicart-pricing-box">
+    <ul>
+        <li>
+            <span>sub-total</span>
+            <span><strong>$@Model.Sum(c => c.Price * c.Count).00</strong></span>
+        </li>
+        <li>
+            <span>Eco Tax (-2.00)</span>
+            <span><strong>$10.00</strong></span>
+        </li>
+        <li>
+            <span>VAT (20%)</span>
+            <span><strong>$@Model.Sum(c => c.Price * c.Count * 20 / 100).00</strong></span>
+        </li>
+        <li class="total">
+            <span>total</span>
+            <span><strong>$@totalPrice.00</strong></span>
+        </li>
+    </ul>
+</div>
+
