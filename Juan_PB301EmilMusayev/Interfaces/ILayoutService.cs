@@ -7,6 +7,6 @@ namespace Juan_PB301EmilMusayev.Interfaces
     {
         IDictionary<string, string> GetSettings();
         Task<IEnumerable<Product>> GetProductsAsync();
-        Task<IEnumerable<CartVM>> GetCartAsync();
+        IEnumerable<CartVM> GetCart();
     }
 }

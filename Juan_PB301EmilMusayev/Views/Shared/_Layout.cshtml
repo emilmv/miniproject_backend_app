@@ -2,7 +2,7 @@
 @{
     var settings = layoutService.GetSettings();
     var products = await layoutService.GetProductsAsync();
-    var cart = await layoutService.GetCartAsync();
+    var cart = layoutService.GetCart();
     var totalPrice = cart.Sum(c => c.Price * c.Count * 20 / 100)+cart.Sum(c=>c.Price*c.Count) + 10;
 }
 <!DOCTYPE html>
@@ -751,11 +751,7 @@
                     <i class="ion-android-close"></i>
                 </div>
                 <div class="minicart-content-box">
-                    @await Html.PartialAsync("_CartPartial",cart)
-                    <div class="minicart-button">
-                        <a href="cart.html"><i class="fa fa-shopping-cart"></i> view cart</a>
-                        <a href="cart.html"><i class="fa fa-share"></i> checkout</a>
-                    </div>
+                    @await Html.PartialAsync("_CartPartial",cart)                   
                 </div>
             </div>
         </div>

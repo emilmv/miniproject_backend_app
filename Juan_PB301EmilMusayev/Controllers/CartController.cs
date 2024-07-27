@@ -52,10 +52,9 @@ namespace Juan_PB301EmilMusayev.Controllers
             HttpContext.Response.Cookies.Append("cart", JsonConvert.SerializeObject(carts));
             return PartialView("_CartPartial",carts);
         }
-        public IActionResult GetCart()
+        public IActionResult CartItems()
         {
-            var result = HttpContext.Request.Cookies["cart"];
-            return Json(result);
+            return View();
         }
     }
 }

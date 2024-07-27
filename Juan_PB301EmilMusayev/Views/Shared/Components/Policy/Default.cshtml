@@ -1,0 +1,21 @@
+﻿@model IEnumerable<Policy>
+<section class="service-policy-area">
+    <div class="container">
+        <div class="row">
+            @foreach (var policy in Model)
+            {
+                <div class="col-lg-4">
+                    <div class="service-policy-item mt-30 @policy.Background">
+                        <div class="policy-icon">
+                            <img src="assets/img/icon/@policy.Image" alt="policy icon" />
+                        </div>
+                        <div class="policy-content">
+                            <h5 class="policy-title">@policy.Title</h5>
+                            <p class="policy-desc">@policy.Description</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>

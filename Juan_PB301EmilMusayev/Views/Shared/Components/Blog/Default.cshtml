@@ -1,0 +1,24 @@
+﻿@model IEnumerable<Blog>
+
+@foreach (var blog in Model)
+{
+    <div class="blog-post-item">
+        <div class="blog-thumb">
+            <a href="@blog.Link">
+                <img src="assets/img/blog/@blog.Image" alt="blog thumb" />
+            </a>
+        </div>
+        <div class="blog-content">
+            <h5 class="blog-title">
+                <a href="blog-details.html">
+                    @blog.Title
+                </a>
+            </h5>
+            <ul class="blog-meta">
+                <li><span>By: </span>Admin,</li>
+                <li><span>On: </span>@blog.CreateDate.ToShortDateString()</li>
+            </ul>
+            <a href="@blog.Link" class="read-more">Read More...</a>
+        </div>
+    </div>
+}

@@ -28,7 +28,7 @@ namespace Juan_PB301EmilMusayev.Services
             .Where(s => !s.IsDeleted)
             .ToDictionary(s => s.Key, s => s.Value);
 
-        public async Task<IEnumerable<CartVM>> GetCartAsync()
+        public IEnumerable<CartVM> GetCart()
         {
             List<CartVM> list = new();
             string cart = _contextAccessor.HttpContext.Request.Cookies["cart"];
@@ -38,7 +38,7 @@ namespace Juan_PB301EmilMusayev.Services
                 list=JsonConvert.DeserializeObject<List<CartVM>>(cart);
                 foreach(var cartProduct in list)
                 {
-                    var existProduct= await _context.Products.AsNoTracking().FirstOrDefaultAsync(p=>p.Id==cartProduct.Id);
+                    var existProduct= _context.Products.AsNoTracking().FirstOrDefault(p=>p.Id==cartProduct.Id);
                     cartProduct.Name = existProduct.Name;
                     cartProduct.Price = (double)existProduct.DiscountPrice > 0 ? (double)existProduct.DiscountPrice : (double)existProduct.SalePrice;
                     cartProduct.Image=existProduct.DisplayImage;
