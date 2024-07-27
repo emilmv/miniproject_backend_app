@@ -2,8 +2,8 @@
 {
     public class ProductImage:BaseEntity
     {
-        public string? Image { get; set; }
+        public string Image { get; set; }
         public int ProductId { get; set; }
-        public Product? product { get; set; }
+        public Product product { get; set; }
     }
 }

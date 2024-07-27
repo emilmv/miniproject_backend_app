@@ -18,7 +18,6 @@
     let links = $(".productModal").click(function (ev) {
         ev.preventDefault();
         let url = ($(this).attr("href"));
-        console.log(url)
         axios.get(url)
             .then(function (response) {
                 $(".modal-body").html(response.data);

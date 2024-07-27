@@ -142,11 +142,9 @@ namespace Juan_PB301EmilMusayev.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ParentId")
+                    b.Property<int?>("ParentCategoryId")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdateDate")
@@ -154,7 +152,7 @@ namespace Juan_PB301EmilMusayev.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ParentId");
+                    b.HasIndex("ParentCategoryId");
 
                     b.ToTable("Categories");
                 });
@@ -196,7 +194,6 @@ namespace Juan_PB301EmilMusayev.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Background")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreateDate")
@@ -232,6 +229,9 @@ namespace Juan_PB301EmilMusayev.Data.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
 
                     b.Property<int>("Count")
                         .HasColumnType("int");
@@ -274,6 +274,8 @@ namespace Juan_PB301EmilMusayev.Data.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Products");
                 });
@@ -550,11 +552,22 @@ namespace Juan_PB301EmilMusayev.Data.Migrations
 
             modelBuilder.Entity("Juan_PB301EmilMusayev.Models.Category", b =>
                 {
-                    b.HasOne("Juan_PB301EmilMusayev.Models.Category", "Parent")
-                        .WithMany("Children")
-                        .HasForeignKey("ParentId");
+                    b.HasOne("Juan_PB301EmilMusayev.Models.Category", "ParentCategory")
+                        .WithMany("ChildCategories")
+                        .HasForeignKey("ParentCategoryId");
 
-                    b.Navigation("Parent");
+                    b.Navigation("ParentCategory");
+                });
+
+            modelBuilder.Entity("Juan_PB301EmilMusayev.Models.Product", b =>
+                {
+                    b.HasOne("Juan_PB301EmilMusayev.Models.Category", "Category")
+                        .WithMany("Products")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("Juan_PB301EmilMusayev.Models.ProductColor", b =>
@@ -606,15 +619,15 @@ namespace Juan_PB301EmilMusayev.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Juan_PB301EmilMusayev.Models.Size", "size")
+                    b.HasOne("Juan_PB301EmilMusayev.Models.Size", "Size")
                         .WithMany("ProductSizes")
                         .HasForeignKey("SizeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("product");
+                    b.Navigation("Size");
 
-                    b.Navigation("size");
+                    b.Navigation("product");
                 });
 
             modelBuilder.Entity("Juan_PB301EmilMusayev.Models.Rating", b =>
@@ -630,7 +643,9 @@ namespace Juan_PB301EmilMusayev.Data.Migrations
 
             modelBuilder.Entity("Juan_PB301EmilMusayev.Models.Category", b =>
                 {
-                    b.Navigation("Children");
+                    b.Navigation("ChildCategories");
+
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("Juan_PB301EmilMusayev.Models.Color", b =>

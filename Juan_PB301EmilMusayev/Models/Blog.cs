@@ -2,8 +2,8 @@
 {
     public class Blog : BaseEntity
     {
-        public string? Image { get; set; }
-        public string? Title { get; set; }
-        public string? Link { get; set; }
+        public string Image { get; set; }
+        public string Title { get; set; }
+        public string Link { get; set; }
     }
 }

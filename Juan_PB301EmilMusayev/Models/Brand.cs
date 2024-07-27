@@ -2,7 +2,7 @@
 {
     public class Brand : BaseEntity
     {
-        public string? Logo { get; set; }
-        public string? Link { get; set; }
+        public string Logo { get; set; }
+        public string Link { get; set; }
     }
 }
