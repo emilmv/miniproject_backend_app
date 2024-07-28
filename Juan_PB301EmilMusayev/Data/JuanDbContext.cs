@@ -1,9 +1,10 @@
 ﻿using Juan_PB301EmilMusayev.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Juan_PB301EmilMusayev.Data
 {
-    public class JuanDbContext : DbContext
+    public class JuanDbContext : IdentityDbContext<AppUser>
     {
         public DbSet<Setting> Settings { get; set; }
         public DbSet<Slider> Sliders { get; set; }
