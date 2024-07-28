@@ -1,6 +1,7 @@
 ﻿using Juan_PB301EmilMusayev.Data;
 using Juan_PB301EmilMusayev.Extensions;
 using Juan_PB301EmilMusayev.Models;
+using Juan_PB301EmilMusayev.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -17,16 +18,16 @@ namespace Juan_PB301EmilMusayev.Areas.Manage.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index(int page=1)
         {
-            var products = await _context.Products
+            var query = _context.Products
                 .AsNoTracking()
                 .Include(p => p.ProductColors)
                 .Include(p => p.Category)
-                .Where(p => !p.IsDeleted)
-                .ToListAsync();
-            return View(products);
+                .Where(p => !p.IsDeleted);
+            return View(PaginationVM<Product>.Create(query,page,3));
         }
+
         public async Task<IActionResult> Create()
         {
             ViewBag.categories = await _context.Categories
@@ -212,14 +213,13 @@ namespace Juan_PB301EmilMusayev.Areas.Manage.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
-        [HttpPost]
-        [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id is null) return BadRequest();
             var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
             if (product is null) return NotFound();
             product.IsDeleted = true;
+            product.DeleteDate = DateTime.Now;
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }

@@ -1,4 +1,5 @@
-﻿@model List<Product>
+﻿@model PaginationVM<Product>
+
 <div class="card shadow mb-4">
     <div class="card-header py-3">
         <h6 class="m-0 font-weight-bold text-primary">Product Table</h6>
@@ -41,5 +42,18 @@
             </table>
         </div>
     </div>
+
+</div>
+<div class="d-flex justify-content-center">
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item @(Model.HasPreviousPage?"":"disabled")"><a class="page-link" asp-action="index" asp-route-page=@(Model.CurrentPage-1)>Previous</a></li>
+            @for (int i = Model.Start; i <= Model.End; i++)
+            {
+                <li class="page-item @(i==Model.CurrentPage?"disabled":"")"><a class="page-link" asp-action="index" asp-route-page="@i">@i</a></li>
+            }
+            <li class="page-item @(Model.HasNextPage?"":"disabled")"><a class="page-link" asp-action="index" asp-route-page=@(Model.CurrentPage+1)>Next</a></li>
+        </ul>
+    </nav>
 </div>
 
