@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Juan_PB301EmilMusayev.Models
 {
@@ -24,5 +25,9 @@ namespace Juan_PB301EmilMusayev.Models
         public bool IsNewArrival { get; set; }
         public int CategoryId { get; set; }
         public Category Category { get; set; }
+        [NotMapped]
+        public IFormFile MainPhoto { get; set; }
+        [NotMapped]
+        public IFormFile[] Photos { get;set; }
     }
 }

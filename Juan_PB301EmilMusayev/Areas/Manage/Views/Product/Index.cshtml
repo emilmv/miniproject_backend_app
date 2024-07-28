@@ -1,7 +1,10 @@
-﻿@model IEnumerable<Product>
+﻿@model List<Product>
 <div class="card shadow mb-4">
     <div class="card-header py-3">
         <h6 class="m-0 font-weight-bold text-primary">Product Table</h6>
+    </div>
+    <div class="card-header py-3">
+        <a asp-action="create" class="btn btn-primary">Create a Product</a>
     </div>
     <div class="card-body">
         <div class="table-responsive">
@@ -12,6 +15,7 @@
                         <th>Create Date</th>
                         <th>Price</th>
                         <th>Count</th>
+                        <th>Category Name</th>
                         <th>Image</th>
                         <th>Settings</th>
                     </tr>
@@ -24,7 +28,13 @@
                             <td>@product.CreateDate.ToString("dd/MM/yyyy")</td>
                             <td>@product.DiscountPrice</td>
                             <td>@product.Count</td>
+                            <td>@product.Category.Name</td>
                             <td> <img style="width: 50px" src="~/assets/img/product/@product.DisplayImage" alt="" /> </td>
+                            <td>
+                                <a class="btn btn-secondary" asp-action="delete" asp-route-id="@product.Id">Delete</a>
+                                <a class="btn btn-secondary" asp-action="Update" asp-route-id="@product.Id">Modify</a>
+                                <a class="btn btn-secondary" asp-action="detail" asp-route-id="@product.Id">Detail</a>
+                            </td>
                         </tr>
                     }
                 </tbody>

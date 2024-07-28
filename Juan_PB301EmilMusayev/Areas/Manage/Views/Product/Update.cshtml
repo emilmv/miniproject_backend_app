@@ -1,0 +1,91 @@
+﻿@model Product
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Product Creation Form</h6>
+    </div>
+    <div class="card-header py-3">
+        <a asp-action="index" class="btn btn-primary">Home</a>
+    </div>
+    <div class="card-body">
+        <form enctype="multipart/form-data" method="post">
+            <div class="form-group">
+                <label asp-for="Name"></label>
+                <input asp-for="Name" class="form-control" placeholder="Enter Product Name">
+                <span class="text-danger" asp-validation-for="Name"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description"></label>
+                <input asp-for="Description" class="form-control" placeholder="Enter Product Description">
+                <span class="text-danger" asp-validation-for="Description"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SalePrice"></label>
+                <input asp-for="SalePrice" class="form-control" placeholder="Enter Sale Price">
+                <span class="text-danger" asp-validation-for="SalePrice"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DiscountPrice"></label>
+                <input asp-for="DiscountPrice" class="form-control" placeholder="Enter Discount Price">
+                <span class="text-danger" asp-validation-for="DiscountPrice"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IsNewArrival"></label>
+                <input asp-for="IsNewArrival" class="form-control" placeholder="Is New Arrival?">
+                <span class="text-danger" asp-validation-for="IsNewArrival"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TaxPercentage"></label>
+                <input asp-for="TaxPercentage" class="form-control" placeholder="Enter Tax Percentage">
+                <span class="text-danger" asp-validation-for="TaxPercentage"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Count"></label>
+                <input asp-for="Count" class="form-control" placeholder="Enter Product Count">
+                <span class="text-danger" asp-validation-for="Count"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MainPhoto"></label>
+                <input accept="image/*" asp-for="MainPhoto" class="form-control" placeholder="Choose Display Image">
+                <span class="text-danger" asp-validation-for="MainPhoto"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Photos"></label>
+                <input accept="image/*" asp-for="Photos" class="form-control" placeholder="Choose Display Image">
+                <span class="text-danger" asp-validation-for="Photos"></span>
+            </div>
+
+            <div class="container-fluid d-flex justify-content-between">
+                <div id="selectOption" class="form-group">
+                    <p>Choose Category</p>
+                    <select asp-for="CategoryId" class="form-select" aria-label="Select">
+                        @foreach (var category in (IEnumerable<Category>)ViewBag.Categories)
+                        {
+                            <option value="@category.Id">@category.Name</option>
+                        }
+                    </select>
+                </div>
+                <div id="selectOption" class="form-group">
+                    <p>Choose Color</p>
+                    <select asp-for="ProductColors" class="form-select" aria-label="Select">
+                        @foreach (var color in (IEnumerable<Color>)ViewBag.colors)
+                        {
+                            <option value="@color.Id">@color.Name</option>
+                        }
+                    </select>
+                </div>
+                <div id="selectOption" class="form-group">
+                    <p>Choose Size</p>
+                    <select asp-for="ProductSizes" class="form-select" aria-label="Select">
+                        @foreach (var size in (IEnumerable<Size>)ViewBag.sizes)
+                        {
+                            <option value="@size.Id">@size.Name</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</div>
+
+

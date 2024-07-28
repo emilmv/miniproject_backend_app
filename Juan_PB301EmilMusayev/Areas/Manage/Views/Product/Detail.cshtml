@@ -1,0 +1,31 @@
+﻿@model Product
+<div class="product-details-inner">
+    <div class="row">
+        <div class="col-lg-5">
+            <div class="product-large-slider mb-20">
+                <div class="pro-large-img img-zoom">
+                    <img src="~/assets/img/product/@Model.DisplayImage" alt="" />
+                </div>
+            </div>
+            <div class="d-flex">
+            @foreach(var image in Model.ProductImages)
+            {
+                <img style="width: 70px" src="~/assets/img/product/@image.Image"/>
+            }
+            </div>
+        </div>
+        <div class="col-lg-7">
+            <div class="product-details-des">
+                <h3 class="pro-det-title">@Model.Name</h3>
+                <div class="price-box">
+                    <span class="regular-price">$@Model.DiscountPrice</span>
+                </div>
+                <p>
+                    @Model.Description
+                </p>
+                <div class="quantity-cart-box d-flex align-items-center mb-20">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
