@@ -16,36 +16,20 @@ namespace Juan_PB301EmilMusayev.Controllers
         public async Task<IActionResult> Index()
         {
             HomeVM homeVM = new();
-            homeVM.Sliders = await _context.Sliders.
-                Where(s => !s.IsDeleted).
-                ToListAsync();
-
-            homeVM.Policies = await _context.Policies
-                .Where(s => !s.IsDeleted)
-                .ToListAsync();
-
             homeVM.ProductDescription = _context.Settings.FirstOrDefault(s => s.Key == "ProductDescription").Value;
-
             homeVM.Products = await _context.Products
                 .Where(p => !p.IsDeleted)
                 .Include(p => p.ProductImages)
                 .Include(p => p.Ratings)
                 .Take(4)
                 .ToListAsync();
-
             homeVM.Banners = await _context.Banners
                 .Where(b => !b.IsDeleted)
                 .ToListAsync();
-
             homeVM.BlogDescription = _context.Settings.FirstOrDefault(s => s.Key == "OurBlog").Value;
-
-            homeVM.Blogs = await _context.Blogs
-                .Where(b => !b.IsDeleted)
-                .ToListAsync();
             homeVM.Brands = await _context.Brands
                 .Where(b => !b.IsDeleted)
                 .ToListAsync();
-
             return View(homeVM);
         }
     }

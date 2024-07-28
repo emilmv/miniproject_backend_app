@@ -44,5 +44,4 @@
                 $(".minicart-content-box").html(datas.data);
             })
     });
-
 });
