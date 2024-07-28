@@ -1,0 +1,44 @@
+﻿@model LoginVM
+<div class="login-register-wrapper section-padding">
+    <div class="container">
+        <div class="member-area-from-wrap">
+            <div class="row justify-content-center">
+                <!-- Login Content Start -->
+                <div class="col-6">
+                    <div class="login-reg-form-wrap">
+                        <h2>Sign In</h2>
+                        <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+                        <form method="post">
+
+                            <div class="single-input-item">
+                                <label asp-for="UsernameOrEmail"></label>
+                                <input asp-for="UsernameOrEmail" type="text" placeholder="Username or Email" required />
+                                <span class="text-danger" asp-validation-for="UsernameOrEmail"></span>
+                            </div>
+
+                            <div class="single-input-item">
+                                <label asp-for="Password"></label>
+                                <input asp-for="Password" type="password" placeholder="Password" required />
+                                <span class="text-danger" asp-validation-for="Password"></span>
+                            </div>
+
+                            <div class="single-input-item">
+                                <div class="login-reg-form-meta d-flex align-items-center justify-content-between">
+                                    <div class="remember-meta">
+                                        <div class="custom-control custom-checkbox">
+                                            Remember Me?<input asp-for="Remember">
+                                        </div>
+                                    </div>
+                                    <a href="#" class="forget-pwd">Forget Password?</a>
+                                </div>
+                            </div>
+                            <div class="single-input-item">
+                                <button class="btn">Login</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
