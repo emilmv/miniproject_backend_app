@@ -51,10 +51,20 @@ namespace Juan_PB301EmilMusayev.Controllers
         //    if (!await _roleManager.RoleExistsAsync("admin")) await _roleManager.CreateAsync(new(){Name = "superadmin"});
         //    return Content("Added");
         //}
+
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginVM loginVM)
         {
             if (!ModelState.IsValid) return View(loginVM);
+
             AppUser user = await _userManager.FindByEmailAsync(loginVM.UsernameOrEmail);
+
             if(user is null)
             {
                 user= await _userManager.FindByNameAsync(loginVM.UsernameOrEmail);
