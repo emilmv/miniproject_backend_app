@@ -4,7 +4,6 @@ using Juan_PB301EmilMusayev.Models;
 using Juan_PB301EmilMusayev.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 
 namespace Juan_PB301EmilMusayev.Areas.Manage.Controllers
 {

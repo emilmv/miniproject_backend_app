@@ -1,9 +1,7 @@
 ﻿using Juan_PB301EmilMusayev.Data;
-using Juan_PB301EmilMusayev.Models;
 using Juan_PB301EmilMusayev.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 
 namespace Juan_PB301EmilMusayev.Controllers

@@ -3,7 +3,7 @@
     var settings = layoutService.GetSettings();
     var products = await layoutService.GetProductsAsync();
     var cart = layoutService.GetCart();
-    var totalPrice = cart.Sum(c => c.Price * c.Count * 20 / 100)+cart.Sum(c=>c.Price*c.Count) + 10;
+    var totalPrice = cart.Sum(c => c.Price * c.Count * 20 / 100) + cart.Sum(c => c.Price * c.Count) + 10;
 }
 <!DOCTYPE html>
 <html class="no-js" lang="zxx">
@@ -25,7 +25,7 @@
     <!--=== Main Style CSS ===-->
     <link href="~/assets/css/style.css" rel="stylesheet" />
     <!-- Modernizer JS -->
-    
+
     <script src="~/assets/js/modernizr-2.8.3.min.js"></script>
 
     <!--[if lt IE 9]>
@@ -51,11 +51,51 @@
                         <div class="col-lg-6 text-right">
                             <div class="header-top-settings">
                                 <ul class="nav align-items-center justify-content-end">
+                                    @* User details *@
+                                    <li class="curreny-wrap">
+                                        @if (User.Identity.IsAuthenticated)
+                                        {
+                                            @User.Identity.Name
+                                            @if (User.IsInRole(UserRoles.admin.ToString()) || User.IsInRole(UserRoles.superadmin.ToString()))
+                                            {
+                                                <i class="fa fa-angle-down"></i>
+                                                <ul class="dropdown-list curreny-list">
+                                                    <li>
+                                                        <a asp-controller="account" asp-action="logout">Logout</a>
+                                                    </li>
+                                                    <li><a href="#">Manage Account</a></li>
+                                                    <li>
+                                                        <a asp-controller="manage" asp-action="index">Admin panel</a>
+                                                    </li>
+                                                </ul>
+                                            }
+                                            else
+                                            {
+                                                <i class="fa fa-angle-down"></i>
+                                                <ul class="dropdown-list curreny-list">
+                                                    <li>
+                                                        <a asp-controller="account" asp-action="logout">Logout</a>
+                                                    </li>
+                                                    <li><a href="#">Manage Account</a></li>
+                                                </ul>
+                                            }
+                                        }
+                                        else
+                                        {
+                                        <li class="curreny-wrap2">
+                                            Account
+                                            <i class="fa fa-angle-down"></i>
+                                            <ul class="dropdown-list curreny-list">
+                                                <li><a asp-controller="account" asp-action="login">Login</a></li>
+                                                <li><a asp-controller="account" asp-action="logout">Register</a></li>
+                                            </ul>
+                                        </li>
+                                        }
                                     <li class="curreny-wrap">
                                         $ Dollar (US)
                                         <i class="fa fa-angle-down"></i>
                                         <ul class="dropdown-list curreny-list">
-                                            <li><a href="#">$ usd</a></li>
+                                            <li><a href="#">$ USD</a></li>
                                             <li><a href="#"> € EURO</a></li>
                                         </ul>
                                     </li>
@@ -169,7 +209,7 @@
                                                                 <a asp-controller="account" asp-action="register">login-register</a>
                                                             </li>
                                                             <li>
-                                                                <a asp-controller="contactus"asp-action="index">contact us</a>
+                                                                <a asp-controller="contactus" asp-action="index">contact us</a>
                                                             </li>
                                                         </ul>
                                                     </li>
@@ -290,9 +330,17 @@
                                                 <i class="ion-ios-gear-outline"></i>
                                             </a>
                                             <ul class="dropdown-list">
+                                                @if (User.Identity.IsAuthenticated)
+                                                {
+                                                    <li><a asp-controller="account" asp-action="logout">logout</a></li>
+                                                    <li><a asp-controller="account" asp-action="register">Manage account</a></li>
+                                                }
+                                                else
+                                                {
+                                                    <li><a asp-controller="account" asp-action="login">login</a></li>
+                                                    <li><a asp-controller="account" asp-action="register">register</a></li>
+                                                }
                                                 <li><a asp-controller="account" asp-action="login">login</a></li>
-                                                <li><a asp-controller="account" asp-action="register">register</a></li>
-                                                <li><a href="my-account.html">my account</a></li>
                                             </ul>
                                         </li>
                                         <li>
@@ -362,9 +410,9 @@
                         <button class="search-btn">
                             <i class="ion-ios-search-strong"></i>
                         </button>
-                        
+
                     </form>
-                    
+
                 </div>
                 <!-- search box end -->
                 <!-- mobile menu start -->
@@ -609,7 +657,7 @@
     </div>
     <!-- Quick view modal end -->
     <!-- Start Footer Area Wrapper -->
-    @await Component.InvokeAsync("Footer",settings)
+    @await Component.InvokeAsync("Footer", settings)
     <!-- End Footer Area Wrapper -->
     <!-- offcanvas search form start -->
     <div class="offcanvas-search-wrapper">
@@ -620,17 +668,17 @@
             <div class="container">
                 <div class="offcanvas-search-box">
                     <div class="w-100">
-                    <form class="d-flex bdr-bottom w-100">
-                        <input id="searchInput" type="text" autocomplete="off" placeholder="Search entire storage here..." />
-                        <button class="search-btn">
-                            <i class="ion-ios-search-strong"></i>search
-                        </button>
-                    </form>
-                    <div>
-                        <ul id="searchList"></ul>
+                        <form class="d-flex bdr-bottom w-100">
+                            <input id="searchInput" type="text" autocomplete="off" placeholder="Search entire storage here..." />
+                            <button class="search-btn">
+                                <i class="ion-ios-search-strong"></i>search
+                            </button>
+                        </form>
+                        <div>
+                            <ul id="searchList"></ul>
+                        </div>
                     </div>
-                    </div>
-                    
+
                 </div>
             </div>
         </div>
@@ -645,7 +693,7 @@
                     <i class="ion-android-close"></i>
                 </div>
                 <div class="minicart-content-box">
-                    @await Html.PartialAsync("_CartPartial",cart)                   
+                    @await Html.PartialAsync("_CartPartial", cart)
                 </div>
             </div>
         </div>
@@ -665,7 +713,7 @@
     <script src="~/assets/js/active.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.2/axios.min.js" integrity="sha512-JSCFHhKDilTRRXe9ak/FJ28dcpOJxzQaCd3Xg8MyF6XFjODhy/YMCM8HW0TFDckNHWUewW+kfvhin43hKtJxAw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="~/assets/js/custom.js"></script>
-    @RenderSection("Scripts",false)
+    @RenderSection("Scripts", false)
 </body>
 
 <!-- Mirrored from demo.hasthemes.com/juan-preview-v1/juan/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 07 Mar 2021 22:36:53 GMT -->

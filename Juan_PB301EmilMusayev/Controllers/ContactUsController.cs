@@ -1,5 +1,4 @@
 ﻿using Juan_PB301EmilMusayev.Interfaces;
-using Juan_PB301EmilMusayev.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Juan_PB301EmilMusayev.Controllers
