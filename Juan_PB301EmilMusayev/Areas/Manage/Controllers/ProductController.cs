@@ -17,14 +17,14 @@ namespace Juan_PB301EmilMusayev.Areas.Manage.Controllers
             _context = context;
         }
 
-        public IActionResult Index(int page=1)
+        public IActionResult Index(int page = 1)
         {
             var query = _context.Products
                 .AsNoTracking()
                 .Include(p => p.ProductColors)
                 .Include(p => p.Category)
                 .Where(p => !p.IsDeleted);
-            return View(PaginationVM<Product>.Create(query,page,3));
+            return View(PaginationVM<Product>.Create(query, page, 3));
         }
 
         public async Task<IActionResult> Create()
@@ -112,7 +112,8 @@ namespace Juan_PB301EmilMusayev.Areas.Manage.Controllers
             newProduct.ProductColors = product.ProductColors;
             await _context.Products.AddAsync(newProduct);
             await _context.SaveChangesAsync();
-            return View();
+            TempData["ProductCreate"] = $"{newProduct.Name} added";
+            return RedirectToAction("index");
         }
         public async Task<IActionResult> Detail(int? id)
         {

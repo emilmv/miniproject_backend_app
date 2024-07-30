@@ -1,8 +1,12 @@
 ﻿using Juan_PB301EmilMusayev.Helpers;
+using Juan_PB301EmilMusayev.Interfaces;
 using Juan_PB301EmilMusayev.Models;
 using Juan_PB301EmilMusayev.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
+using System.Net;
+using System.Net.Mail;
 
 namespace Juan_PB301EmilMusayev.Controllers
 {
@@ -11,11 +15,13 @@ namespace Juan_PB301EmilMusayev.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly SignInManager<AppUser> _signInManager;
-        public AccountController(UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager, SignInManager<AppUser> signInManager)
+        private readonly IEmailService _emailService;
+        public AccountController(UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager, SignInManager<AppUser> signInManager, IEmailService emailService)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _signInManager = signInManager;
+            _emailService = emailService;
         }
         public IActionResult Register()
         {
@@ -41,7 +47,30 @@ namespace Juan_PB301EmilMusayev.Controllers
                 return View(registerVM);
             }
             await _userManager.AddToRoleAsync(user, UserRoles.member.ToString());
+            string token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            string link = Url.Action(nameof(VerifyEmail), "Account", new
+            {
+                email = user.Email,
+                token = token
+            }, Request.Scheme, Request.Host.ToString());
+            string body = string.Empty;
+            using (StreamReader streamReader = new("wwwroot/template/VerifyEmailTemplate.html"))
+            {
+                body = streamReader.ReadToEnd();
+            }
+            body = body.Replace("{{link}}", link);
+            body = body.Replace("{{username}}", user.UserName);
+            _emailService.SendEmail(user.Email, "Verify Email", body);
+
             return RedirectToAction("Index", "Home");
+        }
+        public async Task<IActionResult> VerifyEmail(string token, string email)
+        {
+            AppUser appUser = await _userManager.FindByEmailAsync(email);
+            if (appUser is null) return NotFound();
+            await _userManager.ConfirmEmailAsync(appUser, token);
+            await _signInManager.SignInAsync(appUser, false);
+            return RedirectToAction("index", "home");
         }
         //public async Task<IActionResult> RoleCreation()
         //{
@@ -86,9 +115,6 @@ namespace Juan_PB301EmilMusayev.Controllers
                     return View(loginVM);
                 }
             }
-            
-
-
             var result = await _signInManager.PasswordSignInAsync(user, loginVM.Password, loginVM.Remember, true);
 
             //SignInResult result = await _signInManager.PasswordSignInAsync(user, loginVM.Password, loginVM.Remember, true);
@@ -116,6 +142,59 @@ namespace Juan_PB301EmilMusayev.Controllers
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction("index", "home");
+        }
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> ForgotPassword(string email)
+        {
+            AppUser appUser = await _userManager.FindByEmailAsync(email);
+            if (appUser is null)
+            {
+                ModelState.AddModelError("email", "Email has not been registered before");
+                return View();
+            }
+            var token = await _userManager.GeneratePasswordResetTokenAsync(appUser);
+            string url = Url.Action(nameof(ResetPassword), "Account", new
+            {
+                email = appUser.Email,
+                token
+            }, Request.Scheme, Request.Host.ToString());
+            string body = string.Empty;
+            using (StreamReader streamReader = new("wwwroot/template/ResetPasswordTemplate.html"))
+            {
+                body = streamReader.ReadToEnd();
+            }
+            body = body.Replace("{{link}}", url);
+            body = body.Replace("{{username}}", appUser.UserName);
+            _emailService.SendEmail(appUser.Email, "Reset Password", body);
+            return View();
+        }
+        public async Task<IActionResult> ResetPassword(string email, string token)
+        {
+            var user=await _userManager.FindByEmailAsync(email);
+            if (user is null) return NotFound();
+            bool result = await _userManager.VerifyUserTokenAsync(user, _userManager.Options.Tokens.PasswordResetTokenProvider, "ResetPassword", token);
+            if (!result) return Content("Token Expired");
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(string email, string token, ResetPaswordVM resetPasswordVM)
+        {
+            AppUser appUser = await _userManager.FindByEmailAsync(email);
+            if (ModelState.IsValid) return View();
+            var result = await _userManager.ResetPasswordAsync(appUser, token, resetPasswordVM.Password);
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+                return View(resetPasswordVM);
+            }
+            return RedirectToAction("index","home");
         }
     }
 }

@@ -17,6 +17,7 @@ namespace Juan_PB301EmilMusayev
                 options.UseSqlServer(config.GetConnectionString("DefaultConnection"));
             });
             services.AddScoped<ILayoutService, LayoutService>();
+            services.AddScoped<IEmailService, EmailService>();
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromDays(30);
