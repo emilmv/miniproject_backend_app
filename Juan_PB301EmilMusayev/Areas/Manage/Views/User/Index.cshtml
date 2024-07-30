@@ -1,12 +1,25 @@
-﻿@model IEnumerable<AppUser>
+﻿@model IEnumerable<UserRoleVM>
 
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">Product Table</h6>
+        <h6 class="m-0 font-weight-bold text-primary">Manage Users</h6>
     </div>
     <div class="card-header py-3">
-        <a asp-action="create" class="btn btn-primary">Create a Product</a>
-    </div>
+        <a asp-action="create" class="btn btn-primary">Create a User</a>
+            <form asp-action="index" class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                <div class="input-group">
+                    <input name="searchText" type="text" class="form-control bg-light border-0 small" placeholder="Search for users"
+                           aria-label="Search" aria-describedby="basic-addon2">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="submit">
+                            <i class="fas fa-search fa-sm"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    
+    
     <div class="card-body">
         <div class="table-responsive">
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -15,24 +28,47 @@
                         <th>Username</th>
                         <th>Email Address</th>
                         <th>Status</th>
+                        <th>Roles</th>
                         <th>Control</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var user in Model)
+                    @foreach (var userRoleVM in Model)
                     {
                         <tr>
-                            <td>@user.UserName</td>
-                            <td>@user.Email</td>
-                            <td>@user.s</td>
-                            <td>@product.Count</td>
-                            <td>@product.Category.Name</td>
-                            <td> <img style="width: 50px" src="~/assets/img/product/@product.DisplayImage" alt="" /> </td>
+                            <td>@userRoleVM.User.UserName</td>
+                            <td>@userRoleVM.User.Email</td>
+                            
+                            @if (@userRoleVM.User.IsBlocked)
+                            {
+                                <td class="text-danger">Blocked</td>
+                            }
+                            else
+                            {
+                                <td class="text-success">Active</td>
+                            }
                             <td>
-                                <a class="btn btn-secondary" asp-action="delete" asp-route-id="@product.Id">Delete</a>
-                                <a class="btn btn-secondary" asp-action="Update" asp-route-id="@product.Id">Modify</a>
-                                <a class="btn btn-secondary" asp-action="detail" asp-route-id="@product.Id">Detail</a>
+                                @string.Join(", ", userRoleVM.UserRoles)
                             </td>
+                            <td>
+                                <a class="btn btn-secondary" asp-action="delete" asp-route-id="@userRoleVM.User.Id">Delete</a>
+                                <a class="btn btn-secondary" asp-action="Update" asp-route-id="@userRoleVM.User.Id">Modify</a>
+                                <a class="btn btn-secondary" asp-action="detail" asp-route-id="@userRoleVM.User.Id">Detail</a>
+                                <a class="btn btn-secondary" asp-action="updateuserrole" asp-route-id="@userRoleVM.User.Id">Role</a>
+
+                                @if (!(User.Identity.Name == userRoleVM.User.UserName && User.IsInRole("admin")))
+                                {
+                                    @if (userRoleVM.User.IsBlocked)
+                                    {
+                                        <a class="btn btn-secondary" asp-action="ChangeUserStatus" asp-route-id="@userRoleVM.User.Id">Unblock</a>
+                                    }
+                                    else
+                                    {
+                                        <a class="btn btn-secondary" asp-action="ChangeUserStatus" asp-route-id="@userRoleVM.User.Id">Block</a>
+                                    }
+                                }
+                            </td>
+                            
                         </tr>
                     }
                 </tbody>

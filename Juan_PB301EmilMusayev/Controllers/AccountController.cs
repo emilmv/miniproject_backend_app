@@ -3,7 +3,6 @@ using Juan_PB301EmilMusayev.Models;
 using Juan_PB301EmilMusayev.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace Juan_PB301EmilMusayev.Controllers
 {
@@ -12,7 +11,6 @@ namespace Juan_PB301EmilMusayev.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly SignInManager<AppUser> _signInManager;
-
         public AccountController(UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager, SignInManager<AppUser> signInManager)
         {
             _userManager = userManager;
@@ -52,12 +50,11 @@ namespace Juan_PB301EmilMusayev.Controllers
         //    if (!await _roleManager.RoleExistsAsync(UserRoles.superadmin.ToString())) await _roleManager.CreateAsync(new() { Name = UserRoles.superadmin.ToString() });
         //    return Content("Added");
         //}
-
         public IActionResult Login()
         {
+            if (User.Identity.IsAuthenticated) return RedirectToAction("index", "home");
             return View();
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginVM loginVM, string returnURL)
@@ -69,12 +66,33 @@ namespace Juan_PB301EmilMusayev.Controllers
             if (user is null)
             {
                 user = await _userManager.FindByNameAsync(loginVM.UsernameOrEmail);
+                if (user is null)
+                {
+                    ModelState.AddModelError("", "Username or password is not correct");
+                    return View(loginVM);
+                }
             }
-            if (user is null)
+            var isCorrectPassword = await _userManager.CheckPasswordAsync(user, loginVM.Password);
+            if (!user.EmailConfirmed)
             {
-                ModelState.AddModelError("", "Username or password is not correct");
+                ModelState.AddModelError("", "Email Confirmation needed");
+                return View(loginVM);
             }
-            SignInResult result = await _signInManager.PasswordSignInAsync(user, loginVM.Password, loginVM.Remember, true);
+            if (isCorrectPassword)
+            {
+                if (user.IsBlocked)
+                {
+                    ModelState.AddModelError("", "Account is blocked");
+                    return View(loginVM);
+                }
+            }
+            
+
+
+            var result = await _signInManager.PasswordSignInAsync(user, loginVM.Password, loginVM.Remember, true);
+
+            //SignInResult result = await _signInManager.PasswordSignInAsync(user, loginVM.Password, loginVM.Remember, true);
+
             if (result.IsLockedOut)
             {
                 ModelState.AddModelError("", "Too many attempts, please try again later");
@@ -93,17 +111,11 @@ namespace Juan_PB301EmilMusayev.Controllers
                 return RedirectToAction("index", "home");
             }
             return Redirect(returnURL);
-
-
         }
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction("index", "home");
         }
-
-
-
-
     }
 }
